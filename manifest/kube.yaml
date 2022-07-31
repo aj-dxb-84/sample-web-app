@@ -35,13 +35,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-          resources:
-            limits:
-              cpu: 550m
-              memory: 800Mi
-            requests:
-              cpu: 250m
-              memory: 600Mi
+          
 ---
 # Source: $APPLICATION_NAME/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
