@@ -1,1 +1,63 @@
-
+# Source: $APPLICATION_NAME/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APPLICATION_NAME
+  labels:
+    run: $APPLICATION_NAME
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    run: $APPLICATION_NAME
+---
+# Source: $APPLICATION_NAME/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: $APPLICATION_NAME
+  name: $APPLICATION_NAME
+spec:
+  selector:
+    matchLabels:
+      run: $APPLICATION_NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: $APPLICATION_NAME
+    spec:
+      containers:
+        - name: $APPLICATION_NAME
+          image: $IMAGE_REPOSITORY:$BUILD_NUMBER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 550m
+              memory: 800Mi
+            requests:
+              cpu: 250m
+              memory: 600Mi
+---
+# Source: $APPLICATION_NAME/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: ingress-$APPLICATION_NAME
+spec:
+  rules:
+    - host: $APPLICATION_HOST
+      http:
+        paths:
+          - backend:
+              service:
+                name: $APPLICATION_NAME
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
