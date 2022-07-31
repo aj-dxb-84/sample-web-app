@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    IMAGE_REPOSITORY = "aj-dxb-84/sample-web-app"
+    IMAGE_REPOSITORY = "abdelghanihub/sample-web-app"
     GIT_REPOSITORY = "https://github.com/aj-dxb-84/sample-web-app.git"
     APPLICATION_NAME = "sample-web-app"
     APPLICATION_HOST = "sampleapp.somecluster.com"
